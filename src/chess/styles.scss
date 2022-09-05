@@ -1,0 +1,121 @@
+body {
+  font-family: sans-serif;
+}
+
+.field {
+  width: 640px;
+  height: 640px;
+  position: relative;
+}
+
+.cell {
+  width: 80px;
+  height: 80px;
+  position: absolute;
+}
+
+.black {
+  background: rgb(125, 149, 93);
+}
+
+@mixin figure($backgroundUrl) {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url($backgroundUrl);
+  background-size: 100%;
+  z-index: 2;
+}
+
+.bp::before {
+  @include figure("./assets/bp.png");
+}
+
+.bk::before {
+  @include figure("./assets/bk.png");
+}
+
+.br::before {
+  @include figure("./assets/br.png");
+}
+
+.bn::before {
+  @include figure("./assets/bn.png");
+}
+
+.bq::before {
+  @include figure("./assets/bq.png");
+}
+
+.bb::before {
+  @include figure("./assets/bb.png");
+}
+
+.wp::before {
+  @include figure("./assets/wp.png");
+}
+
+.wk::before {
+  @include figure("./assets/wk.png");
+}
+
+.wr::before {
+  @include figure("./assets/wr.png");
+}
+
+.wn::before {
+  @include figure("./assets/wn.png");
+}
+
+.wq::before {
+  @include figure("./assets/wq.png");
+}
+
+.wb::before {
+  @include figure("./assets/wb.png");
+}
+
+
+.white {
+  background: rgb(238, 238, 213);
+}
+
+.selectedFigure::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #bada55;
+  opacity: 0.7;
+  z-index: 1;
+}
+
+.availableMove::after {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.15);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.availableTake::after {
+  content: "";
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0)!important;
+  outline: 10px solid rgba(0, 0, 0, 0.15);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

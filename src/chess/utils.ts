@@ -1,12 +1,11 @@
 import {
   CellType,
-  Position,
   CELL_COUNT_IN_ROW,
   Color,
   color,
   FigureType,
   figureType,
-  PositionNullable
+  Position
 } from "./types";
 
 import { isNil } from "lodash";
@@ -79,7 +78,7 @@ export const strToPos = (str: string): Position => {
   };
 };
 
-export const posToStr = (position: PositionNullable): string => {
+export const posToStr = (position: Position): string => {
   if (isNil(position.x) || isNil(position.y)) {
     throw new Error("Position should not to be 'null' or 'undefined'");
   }

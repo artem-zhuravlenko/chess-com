@@ -11,12 +11,12 @@ export class View {
   $root: HTMLElement;
   $chessField: HTMLElement;
   constructor() {
-    this.$chessField = this.createElement("div", "field");
-    this.$root = this.getElement("#app")!;
+    this.$chessField = View.createElement("div", "field");
+    this.$root = View.getElement("#app")!;
   }
 
   public render(model: Model): void {
-    this.$chessField = this.createElement("div", "field");
+    this.$chessField = View.createElement("div", "field");
 
     this.drawBoard(model);
     this.drawAvailableMoves(model);
@@ -37,7 +37,7 @@ export class View {
   }
 
   private drawAvailableMoves(model: Model): void {
-    if (!model.isSelectedCellExist) return;
+    if (!model.selectedCell) return;
 
     const selectedFigure = model.getFigure(model.selectedCell.position);
 
@@ -54,7 +54,7 @@ export class View {
   }
 
   private drawAvailableTakes(model: Model): void {
-    if (!model.isSelectedCellExist) return;
+    if (!model.selectedCell) return;
 
     const selectedFigure = model.getFigure(model.selectedCell.position);
 
@@ -70,7 +70,7 @@ export class View {
     });
   }
 
-  private getElement(selector: string): HTMLElement | null {
+  private static getElement(selector: string): HTMLElement | null {
     const $element = document.querySelector(selector);
 
     if ($element instanceof HTMLElement) {
@@ -79,7 +79,7 @@ export class View {
     return null;
   }
 
-  private createElement(tag: string, className?: string): HTMLElement {
+  private static createElement(tag: string, className?: string): HTMLElement {
     const $element = document.createElement(tag);
 
     if (className) {
@@ -91,7 +91,7 @@ export class View {
 
   public drawCell(model: Model, position: Position): void {
     const type = cellColor(position);
-    const $cell = this.createElement("div", `cell`);
+    const $cell = View.createElement("div", `cell`);
     $cell.classList.add(type);
 
     $cell.setAttribute("data-x", position.x.toString());
@@ -100,6 +100,7 @@ export class View {
     $cell.style.left = CELL_WIDTH_PX * position.x + "px";
 
     const isSelectedFigure =
+      model.selectedCell &&
       model.selectedCell.position.x === position.x &&
       model.selectedCell.position.y === position.y;
 
@@ -107,7 +108,7 @@ export class View {
       $cell.classList.add("selectedFigure");
     }
 
-    const figure = model.getFigure({ x: position.x, y: position.y });
+    const figure = model.getFigure(position);
 
     if (figure) {
       const className = convertToFigureClassName(

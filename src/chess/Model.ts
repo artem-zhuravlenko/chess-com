@@ -1,5 +1,5 @@
-import { isNil } from "lodash";
-import { Position, PositionNullable, Color, color, figureType } from "./types";
+import {isNil} from "lodash";
+import { Position, Color, color, figureType } from "./types";
 import { checkWithinTheBoard, posToStr, strToPos } from "./utils";
 import { Figure } from "./Figures";
 import {
@@ -14,25 +14,19 @@ import {
   kingDirections
 } from "./moveDirections";
 
-const defaultSelectedCell = {
-  position: {
-    x: null,
-    y: null
-  }
-};
 
 export class Model {
-  // Избавиться от PositionNullable. Заменить на Position | null
   selectedCell: {
-    position: PositionNullable;
-  };
+    position: Position;
+  } | null;
   onModelChange: (model: Model) => void;
   currentTurn: Color;
   figures: { [key: string]: Figure };
 
   constructor() {
-    this.selectedCell = defaultSelectedCell;
+    this.selectedCell = null;
     this.currentTurn = color.white;
+    this.onModelChange = () => {}
     this.figures = {
       [posToStr({ x: 0, y: 0 })]: new Figure(figureType.rook, color.black),
       [posToStr({ x: 1, y: 0 })]: new Figure(figureType.bishop, color.black),
@@ -69,19 +63,12 @@ export class Model {
     };
   }
 
-  public get isSelectedCellExist(): boolean {
-    return (
-      !isNil(this.selectedCell.position.x) &&
-      !isNil(this.selectedCell.position.y)
-    );
-  }
-
   private toggleTurn() {
     this.currentTurn =
       this.currentTurn === color.white ? color.black : color.white;
   }
 
-  public getFigure(position: PositionNullable): Figure | null {
+  public getFigure(position: Position): Figure | null {
     return this.figures[posToStr(position)] ?? null;
   }
 
@@ -97,7 +84,7 @@ export class Model {
     return this.basicMoveCheck(position);
   }
 
-  private updateAvailableMoves(
+  private static updateAvailableMoves(
     figure: Figure,
     directions: Position[][],
     checkCallback: (position: Position) => boolean
@@ -143,7 +130,7 @@ export class Model {
       switch (figure.figureType) {
         case figureType.pawn:
           if (figure.color === color.white) {
-            this.updateAvailableMoves(
+            Model.updateAvailableMoves(
               figure,
               whitePawnMoveDirections(figurePosition, figure.isMoved),
               this.basicMoveCheck.bind(this)
@@ -153,7 +140,7 @@ export class Model {
               whitePawnTakeDirections(figurePosition)
             );
           } else {
-            this.updateAvailableMoves(
+            Model.updateAvailableMoves(
               figure,
               blackPawnMoveDirections(figurePosition, figure.isMoved),
               this.basicMoveCheck.bind(this)
@@ -165,7 +152,7 @@ export class Model {
           }
           break;
         case figureType.knight:
-          this.updateAvailableMoves(
+          Model.updateAvailableMoves(
             figure,
             knightDirections(figurePosition),
             this.basicMoveCheck.bind(this)
@@ -173,7 +160,7 @@ export class Model {
           this.updateAvailableTakes(figure, knightDirections(figurePosition));
           break;
         case figureType.rook:
-          this.updateAvailableMoves(
+          Model.updateAvailableMoves(
             figure,
             rockDirections(figurePosition),
             this.basicMoveCheck.bind(this)
@@ -181,7 +168,7 @@ export class Model {
           this.updateAvailableTakes(figure, rockDirections(figurePosition));
           break;
         case figureType.bishop:
-          this.updateAvailableMoves(
+          Model.updateAvailableMoves(
             figure,
             bishopDirections(figurePosition),
             this.basicMoveCheck.bind(this)
@@ -189,7 +176,7 @@ export class Model {
           this.updateAvailableTakes(figure, bishopDirections(figurePosition));
           break;
         case figureType.queen:
-          this.updateAvailableMoves(
+          Model.updateAvailableMoves(
             figure,
             queenDirections(figurePosition),
             this.basicMoveCheck.bind(this)
@@ -197,7 +184,7 @@ export class Model {
           this.updateAvailableTakes(figure, queenDirections(figurePosition));
           break;
         case figureType.king:
-          this.updateAvailableMoves(
+          Model.updateAvailableMoves(
             figure,
             kingDirections(figurePosition),
             this.kingMoveCheck.bind(this)
@@ -216,7 +203,7 @@ export class Model {
     this.onModelChange(model);
   }
 
-  public selectFigure({ x, y }: PositionNullable): void {
+  public selectFigure({ x, y }: Position): void {
     const selectedFigure = this.getFigure({ x, y });
 
     if (!selectedFigure) return;
@@ -231,8 +218,8 @@ export class Model {
   }
 
   private tryMoveFigure(
-    positionFrom: PositionNullable,
-    positionTo: PositionNullable
+    positionFrom: Position,
+    positionTo: Position
   ): void {
     const positionFromFigure = this.getFigure(positionFrom);
     const positionToFigure = this.getFigure(positionTo);
@@ -257,8 +244,8 @@ export class Model {
   }
 
   private tryTakeFigure(
-    positionFrom: PositionNullable,
-    positionTo: PositionNullable
+    positionFrom: Position,
+    positionTo: Position
   ): void {
     const positionFromFigure = this.getFigure(positionFrom);
     const positionToFigure = this.getFigure(positionTo);
@@ -283,14 +270,11 @@ export class Model {
     this.commitChanges(this);
   }
 
-  public figureControl(positionTo: PositionNullable): void {
-    if (!this.isSelectedCellExist) return;
+  public figureControl(positionFrom: Position, positionTo: Position): void {
+    if (!this.selectedCell) return;
     const selectedFigure = this.getFigure(this.selectedCell.position);
 
-    if (isNil(positionTo.x) || isNil(positionTo.y)) return;
     if (isNil(selectedFigure)) return;
-
-    const positionFrom = this.selectedCell.position;
 
     this.tryMoveFigure(positionFrom, positionTo);
     this.tryTakeFigure(positionFrom, positionTo);
@@ -311,3 +295,4 @@ export class Model {
 // * Когда нет возможности срубить фигуру противника. При этом после этого надо сновоа не попасть под шах.
 // * Когда нет возможности возможности прикрыться своей фигурой
 // * Продумать поведение короля
+

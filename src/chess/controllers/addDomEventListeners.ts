@@ -1,7 +1,7 @@
-import { View } from "./View";
-import { Model } from "./Model";
-import { strToNumber } from "./utils";
-import { Position } from "./types";
+import { View } from "../View";
+import { Model } from "../Model";
+import { strToNumber } from "../utils";
+import { Position } from "../types";
 import { isNil } from "lodash";
 
 export const getClickedCellCoordinates = (

@@ -1,16 +1,9 @@
 import "./chess/styles.scss";
 import { View } from "./chess/View";
-import { Controller } from "./chess/Controller";
+import { ControllerMVC } from "./chess/ControllerMVC";
 import { Model } from "./chess/Model";
-import {immortalGame1851} from "./chess/mock/immortalGame1851";
+import {addDomEventListeners} from "./chess/controllers/addDomEventListeners";
+// import {playRecordedGame} from "./chess/controllers/playRecordedGame";
+// import {immortalGame1851} from "./chess/controllers/recordedGames/immortalGame1851";
 
-
-const zombe = (model: Model) => {
-  immortalGame1851.forEach((move, i) => {
-    setTimeout(() => {
-      model.figureControl(move.positionFrom, move.positionTo);
-    }, 1500 * (i + 1));
-  });
-};
-
-new Controller(new Model(), new View(), zombe);
+new ControllerMVC(new Model(), new View(), addDomEventListeners);

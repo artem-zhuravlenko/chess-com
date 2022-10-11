@@ -1,11 +1,11 @@
-import {Position} from "../types";
+import {Position} from "../../types";
 
-interface Move {
+export interface MoveCoordinates {
     positionFrom: Position,
     positionTo: Position,
 }
 
-export const immortalGame1851: Move[] = [
+export const immortalGame1851: MoveCoordinates[] = [
     {
         positionFrom: {
             x: 4,

@@ -1,7 +1,9 @@
 import { Model } from "./Model";
 import { View } from "./View";
 
-type ApplyListeners = ((model: Model, view: View) => void) | ((model: Model, view?: View) => void);
+type ApplyListeners =
+  | ((model: Model, view: View) => void)
+  | ((model: Model, view?: View) => void);
 
 export class Controller {
   model: Model;
@@ -18,5 +20,4 @@ export class Controller {
   private onModelChange(): void {
     this.view.render(this.model);
   }
-
 }

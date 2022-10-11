@@ -8,7 +8,7 @@ import {
   rightDownPositions,
   leftDownPositions,
   rightUpPositions,
-  leftUpPositions
+  leftUpPositions,
 } from "./directionGenerators";
 
 export const rockDirections = (position: Position): Position[][] => {
@@ -16,7 +16,7 @@ export const rockDirections = (position: Position): Position[][] => {
     upPositions(position),
     downPositions(position),
     leftPositions(position),
-    rightPositions(position)
+    rightPositions(position),
   ];
 };
 
@@ -29,7 +29,7 @@ export const queenDirections = (position: Position): Position[][] => {
     rightDownPositions(position),
     leftDownPositions(position),
     rightUpPositions(position),
-    leftUpPositions(position)
+    leftUpPositions(position),
   ];
 };
 
@@ -42,7 +42,7 @@ export const kingDirections = (position: Position): Position[][] => {
     rightDownPositions(position).slice(0, 1),
     leftDownPositions(position).slice(0, 1),
     rightUpPositions(position).slice(0, 1),
-    leftUpPositions(position).slice(0, 1)
+    leftUpPositions(position).slice(0, 1),
   ];
 };
 
@@ -51,7 +51,7 @@ export const bishopDirections = (position: Position): Position[][] => {
     rightDownPositions(position),
     leftDownPositions(position),
     rightUpPositions(position),
-    leftUpPositions(position)
+    leftUpPositions(position),
   ];
 };
 
@@ -78,14 +78,14 @@ export const whitePawnMoveDirections = (
 export const blackPawnTakeDirections = (position: Position): Position[][] => {
   return [
     leftDownPositions(position).slice(0, 1),
-    rightDownPositions(position).slice(0, 1)
+    rightDownPositions(position).slice(0, 1),
   ];
 };
 
 export const whitePawnTakeDirections = (position: Position): Position[][] => {
   return [
     leftUpPositions(position).slice(0, 1),
-    rightUpPositions(position).slice(0, 1)
+    rightUpPositions(position).slice(0, 1),
   ];
 };
 
@@ -98,6 +98,6 @@ export const knightDirections = (position: Position): Position[][] => {
     [{ x: position.x - 1, y: position.y + 2 }],
     [{ x: position.x - 2, y: position.y + 1 }],
     [{ x: position.x - 2, y: position.y - 1 }],
-    [{ x: position.x - 1, y: position.y - 2 }]
+    [{ x: position.x - 1, y: position.y - 2 }],
   ];
 };

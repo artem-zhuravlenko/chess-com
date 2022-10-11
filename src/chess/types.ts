@@ -1,6 +1,6 @@
 export const color = {
   black: "black",
-  white: "white"
+  white: "white",
 } as const;
 
 export type Color = typeof color[keyof typeof color];
@@ -11,7 +11,7 @@ export const figureType = {
   rook: "rook",
   bishop: "bishop",
   queen: "queen",
-  knight: "knight"
+  knight: "knight",
 } as const;
 
 export type FigureType = typeof figureType[keyof typeof figureType];

@@ -5,7 +5,7 @@ import {
   color,
   FigureType,
   figureType,
-  Position
+  Position,
 } from "./types";
 
 import { isNil } from "lodash";
@@ -74,7 +74,7 @@ export const strToPos = (str: string): Position => {
 
   return {
     x: parseInt(str[0]),
-    y: parseInt(str[2])
+    y: parseInt(str[2]),
   };
 };
 

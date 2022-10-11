@@ -4,7 +4,7 @@ import { CELL_COUNT_IN_ROW, CELL_WIDTH_PX, Position } from "./types";
 import {
   cellColor,
   cellCoordinatesSelector,
-  convertToFigureClassName
+  convertToFigureClassName,
 } from "./utils";
 
 export class View {
@@ -30,7 +30,7 @@ export class View {
       for (let j = 0; j < CELL_COUNT_IN_ROW; j++) {
         this.drawCell(model, {
           x: i,
-          y: j
+          y: j,
         });
       }
     }

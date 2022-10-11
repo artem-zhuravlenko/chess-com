@@ -1,4 +1,4 @@
-import {isNil} from "lodash";
+import { isNil } from "lodash";
 import { Position, Color, color, figureType } from "./types";
 import { checkWithinTheBoard, posToStr, strToPos } from "./utils";
 import { Figure } from "./Figures";
@@ -11,32 +11,8 @@ import {
   bishopDirections,
   rockDirections,
   queenDirections,
-  kingDirections
+  kingDirections,
 } from "./moveDirections";
-
-
-
-// const resolveMoveDirections = (fType: string, figureColor: string ) => {
-//   switch (fType) {
-//     case figureType.pawn:
-//       if (figureColor === color.white) {
-//             return whitePawnMoveDirections
-//       } else {
-//             return blackPawnMoveDirections
-//       }
-//     case figureType.knight:
-//           return knightDirections
-//     case figureType.rook:
-//           return rockDirections
-//     case figureType.bishop:
-//           return bishopDirections
-//     case figureType.queen:
-//           return queenDirections
-//     case figureType.king:
-//           return kingDirections
-//     default: return () => undefined;
-//   }
-// }
 
 export class Model {
   selectedCell: {
@@ -49,7 +25,9 @@ export class Model {
   constructor() {
     this.selectedCell = null;
     this.currentTurn = color.white;
-    this.onModelChange = () => {throw new Error('You should specify onModelChange')}
+    this.onModelChange = () => {
+      throw new Error("You should specify onModelChange");
+    };
     this.figures = {
       [posToStr({ x: 0, y: 0 })]: new Figure(figureType.rook, color.black),
       [posToStr({ x: 1, y: 0 })]: new Figure(figureType.knight, color.black),
@@ -82,9 +60,8 @@ export class Model {
       [posToStr({ x: 4, y: 6 })]: new Figure(figureType.pawn, color.white),
       [posToStr({ x: 5, y: 6 })]: new Figure(figureType.pawn, color.white),
       [posToStr({ x: 6, y: 6 })]: new Figure(figureType.pawn, color.white),
-      [posToStr({ x: 7, y: 6 })]: new Figure(figureType.pawn, color.white)
+      [posToStr({ x: 7, y: 6 })]: new Figure(figureType.pawn, color.white),
     };
-    window.selects = []
   }
 
   private toggleTurn() {
@@ -235,16 +212,13 @@ export class Model {
     if (selectedFigure.color !== this.currentTurn) return;
 
     this.selectedCell = {
-      position: { x, y }
+      position: { x, y },
     };
 
     this.commitChanges(this);
   }
 
-  private tryMoveFigure(
-    positionFrom: Position,
-    positionTo: Position
-  ): void {
+  private tryMoveFigure(positionFrom: Position, positionTo: Position): void {
     const positionFromFigure = this.getFigure(positionFrom);
     const positionToFigure = this.getFigure(positionTo);
 
@@ -259,7 +233,6 @@ export class Model {
 
     this.figures[posToStr(positionTo)] = this.figures[posToStr(positionFrom)];
     delete this.figures[posToStr(positionFrom)];
-    window.selects.push({positionFrom, positionTo})
 
     positionFromFigure.isMoved = true;
     this.toggleTurn();
@@ -268,10 +241,7 @@ export class Model {
     this.commitChanges(this);
   }
 
-  private tryTakeFigure(
-    positionFrom: Position,
-    positionTo: Position
-  ): void {
+  private tryTakeFigure(positionFrom: Position, positionTo: Position): void {
     const positionFromFigure = this.getFigure(positionFrom);
     const positionToFigure = this.getFigure(positionTo);
 
@@ -287,7 +257,6 @@ export class Model {
 
     this.figures[posToStr(positionTo)] = this.figures[posToStr(positionFrom)];
     delete this.figures[posToStr(positionFrom)];
-    window.selects.push({positionFrom, positionTo})
 
     positionFromFigure.isMoved = true;
     this.toggleTurn();
@@ -316,4 +285,3 @@ export class Model {
 // * Когда нет возможности срубить фигуру противника. При этом после этого надо сновоа не попасть под шах.
 // * Когда нет возможности возможности прикрыться своей фигурой
 // * Продумать поведение короля
-

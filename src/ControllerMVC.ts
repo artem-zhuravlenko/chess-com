@@ -1,20 +1,20 @@
 import { Model } from "./Model";
 import { View } from "./View";
 
-type ApplyControllers =
+type ApplyControl =
   | ((model: Model, view: View) => void)
   | ((model: Model, view?: View) => void);
 
 export class ControllerMVC {
   model: Model;
   view: View;
-  constructor(model: Model, view: View, applyControllers: ApplyControllers) {
+  constructor(model: Model, view: View, applyControl: ApplyControl) {
     this.model = model;
     this.view = view;
     this.model.bindModelChange(this.onModelChange.bind(this));
     this.model.updateFieldState();
     this.view.render(this.model);
-    applyControllers(model, view);
+    applyControl(model, view);
   }
 
   private onModelChange(): void {

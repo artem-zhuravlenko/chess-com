@@ -15,6 +15,29 @@ import {
 } from "./moveDirections";
 
 
+
+// const resolveMoveDirections = (fType: string, figureColor: string ) => {
+//   switch (fType) {
+//     case figureType.pawn:
+//       if (figureColor === color.white) {
+//             return whitePawnMoveDirections
+//       } else {
+//             return blackPawnMoveDirections
+//       }
+//     case figureType.knight:
+//           return knightDirections
+//     case figureType.rook:
+//           return rockDirections
+//     case figureType.bishop:
+//           return bishopDirections
+//     case figureType.queen:
+//           return queenDirections
+//     case figureType.king:
+//           return kingDirections
+//     default: return () => undefined;
+//   }
+// }
+
 export class Model {
   selectedCell: {
     position: Position;
@@ -26,15 +49,15 @@ export class Model {
   constructor() {
     this.selectedCell = null;
     this.currentTurn = color.white;
-    this.onModelChange = () => {}
+    this.onModelChange = () => {throw new Error('You should specify onModelChange')}
     this.figures = {
       [posToStr({ x: 0, y: 0 })]: new Figure(figureType.rook, color.black),
-      [posToStr({ x: 1, y: 0 })]: new Figure(figureType.bishop, color.black),
-      [posToStr({ x: 2, y: 0 })]: new Figure(figureType.knight, color.black),
-      [posToStr({ x: 3, y: 0 })]: new Figure(figureType.king, color.black),
-      [posToStr({ x: 4, y: 0 })]: new Figure(figureType.queen, color.black),
-      [posToStr({ x: 5, y: 0 })]: new Figure(figureType.knight, color.black),
-      [posToStr({ x: 6, y: 0 })]: new Figure(figureType.bishop, color.black),
+      [posToStr({ x: 1, y: 0 })]: new Figure(figureType.knight, color.black),
+      [posToStr({ x: 2, y: 0 })]: new Figure(figureType.bishop, color.black),
+      [posToStr({ x: 3, y: 0 })]: new Figure(figureType.queen, color.black),
+      [posToStr({ x: 4, y: 0 })]: new Figure(figureType.king, color.black),
+      [posToStr({ x: 5, y: 0 })]: new Figure(figureType.bishop, color.black),
+      [posToStr({ x: 6, y: 0 })]: new Figure(figureType.knight, color.black),
       [posToStr({ x: 7, y: 0 })]: new Figure(figureType.rook, color.black),
       [posToStr({ x: 0, y: 1 })]: new Figure(figureType.pawn, color.black),
       [posToStr({ x: 1, y: 1 })]: new Figure(figureType.pawn, color.black),
@@ -45,12 +68,12 @@ export class Model {
       [posToStr({ x: 6, y: 1 })]: new Figure(figureType.pawn, color.black),
       [posToStr({ x: 7, y: 1 })]: new Figure(figureType.pawn, color.black),
       [posToStr({ x: 0, y: 7 })]: new Figure(figureType.rook, color.white),
-      [posToStr({ x: 1, y: 7 })]: new Figure(figureType.bishop, color.white),
-      [posToStr({ x: 2, y: 7 })]: new Figure(figureType.knight, color.white),
-      [posToStr({ x: 3, y: 7 })]: new Figure(figureType.queen, color.white),
+      [posToStr({ x: 1, y: 7 })]: new Figure(figureType.knight, color.white),
+      [posToStr({ x: 2, y: 7 })]: new Figure(figureType.bishop, color.white),
       [posToStr({ x: 4, y: 7 })]: new Figure(figureType.king, color.white),
-      [posToStr({ x: 5, y: 7 })]: new Figure(figureType.knight, color.white),
-      [posToStr({ x: 6, y: 7 })]: new Figure(figureType.bishop, color.white),
+      [posToStr({ x: 3, y: 7 })]: new Figure(figureType.queen, color.white),
+      [posToStr({ x: 5, y: 7 })]: new Figure(figureType.bishop, color.white),
+      [posToStr({ x: 6, y: 7 })]: new Figure(figureType.knight, color.white),
       [posToStr({ x: 7, y: 7 })]: new Figure(figureType.rook, color.white),
       [posToStr({ x: 0, y: 6 })]: new Figure(figureType.pawn, color.white),
       [posToStr({ x: 1, y: 6 })]: new Figure(figureType.pawn, color.white),
@@ -61,6 +84,7 @@ export class Model {
       [posToStr({ x: 6, y: 6 })]: new Figure(figureType.pawn, color.white),
       [posToStr({ x: 7, y: 6 })]: new Figure(figureType.pawn, color.white)
     };
+    window.selects = []
   }
 
   private toggleTurn() {
@@ -235,6 +259,7 @@ export class Model {
 
     this.figures[posToStr(positionTo)] = this.figures[posToStr(positionFrom)];
     delete this.figures[posToStr(positionFrom)];
+    window.selects.push({positionFrom, positionTo})
 
     positionFromFigure.isMoved = true;
     this.toggleTurn();
@@ -262,6 +287,7 @@ export class Model {
 
     this.figures[posToStr(positionTo)] = this.figures[posToStr(positionFrom)];
     delete this.figures[posToStr(positionFrom)];
+    window.selects.push({positionFrom, positionTo})
 
     positionFromFigure.isMoved = true;
     this.toggleTurn();
@@ -271,11 +297,6 @@ export class Model {
   }
 
   public figureControl(positionFrom: Position, positionTo: Position): void {
-    if (!this.selectedCell) return;
-    const selectedFigure = this.getFigure(this.selectedCell.position);
-
-    if (isNil(selectedFigure)) return;
-
     this.tryMoveFigure(positionFrom, positionTo);
     this.tryTakeFigure(positionFrom, positionTo);
   }

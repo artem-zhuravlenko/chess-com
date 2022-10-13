@@ -95,3 +95,23 @@ export const strToNumber = (str: string | undefined | null): number | null => {
 
   return !isNaN(parsedValue) ? parsedValue : null;
 };
+
+export const getElement = (selector: string): HTMLElement | null => {
+  const $element = document.querySelector(selector);
+
+  if ($element instanceof HTMLElement) {
+    return $element;
+  }
+  return null;
+}
+
+export const createElement = (tag: string, className?: string): HTMLElement => {
+  const $element = document.createElement(tag);
+
+  if (className) {
+    $element.classList.add(className);
+  }
+
+  return $element;
+}
+

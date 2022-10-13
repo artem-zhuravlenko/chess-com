@@ -5,18 +5,20 @@ import {
   cellColor,
   cellCoordinatesSelector,
   convertToFigureClassName,
+  createElement,
+  getElement
 } from "./utils";
 
 export class View {
   $root: HTMLElement;
   $chessField: HTMLElement;
   constructor() {
-    this.$chessField = View.createElement("div", "field");
-    this.$root = View.getElement("#app")!;
+    this.$chessField = createElement("div", "field");
+    this.$root = getElement("#app")!;
   }
 
   public render(model: Model): void {
-    this.$chessField = View.createElement("div", "field");
+    this.$chessField = createElement("div", "field");
 
     this.drawBoard(model);
     this.drawAvailableMoves(model);
@@ -70,28 +72,9 @@ export class View {
     });
   }
 
-  private static getElement(selector: string): HTMLElement | null {
-    const $element = document.querySelector(selector);
-
-    if ($element instanceof HTMLElement) {
-      return $element;
-    }
-    return null;
-  }
-
-  private static createElement(tag: string, className?: string): HTMLElement {
-    const $element = document.createElement(tag);
-
-    if (className) {
-      $element.classList.add(className);
-    }
-
-    return $element;
-  }
-
   public drawCell(model: Model, position: Position): void {
     const type = cellColor(position);
-    const $cell = View.createElement("div", `cell`);
+    const $cell = createElement("div", `cell`);
     $cell.classList.add(type);
 
     $cell.setAttribute("data-x", position.x.toString());

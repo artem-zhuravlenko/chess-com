@@ -1,10 +1,7 @@
 import { Model } from "./Model";
 import { View } from "./View";
 
-type ApplyControl =
-  | ((model: Model, view: View) => void)
-  | ((model: Model, view?: View) => void);
-
+type ApplyControl = (model: Model, view?: View) => void;
 export class ControllerMVC {
   model: Model;
   view: View;

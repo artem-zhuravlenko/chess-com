@@ -1,7 +1,9 @@
-import { isNil } from "lodash";
-import { Position, Color, color, figureType } from "./types";
-import { checkWithinTheBoard, posToStr, strToPos } from "./utils";
-import { Figure } from "./Figures";
+import { Position, Color, COLOR, FIGURE_TYPE, PositionString, FigurePositions } from "./types";
+import { posToPosStr } from "./helpers/posToStr";
+import { strToPos } from "./helpers/strToPos";
+import { objectEntries } from "./helpers/objectEntries";
+import { isCellIndex } from "./helpers/isCellIndex";
+import { Figure } from "./Figure";
 import {
   whitePawnMoveDirections,
   blackPawnMoveDirections,
@@ -14,81 +16,45 @@ import {
   kingDirections,
 } from "./moveDirections";
 
+export const getOppositeColor = (color: Color) => {
+  return color === COLOR.white ? COLOR.black : COLOR.white;
+};
+
 export class Model {
   selectedCell: {
     position: Position;
   } | null;
   onModelChange: (model: Model) => void;
   currentTurn: Color;
-  figures: { [key: string]: Figure };
+  readonly figures: Partial<{ [key in PositionString]: Figure }>;
 
-  constructor() {
+  constructor(defaultFigurePosition: FigurePositions) {
     this.selectedCell = null;
-    this.currentTurn = color.white;
+    this.currentTurn = COLOR.white;
     this.onModelChange = () => {
       throw new Error("You should specify onModelChange");
     };
-    this.figures = {
-      [posToStr({ x: 0, y: 0 })]: new Figure(figureType.rook, color.black),
-      [posToStr({ x: 1, y: 0 })]: new Figure(figureType.knight, color.black),
-      [posToStr({ x: 2, y: 0 })]: new Figure(figureType.bishop, color.black),
-      [posToStr({ x: 3, y: 0 })]: new Figure(figureType.queen, color.black),
-      [posToStr({ x: 4, y: 0 })]: new Figure(figureType.king, color.black),
-      [posToStr({ x: 5, y: 0 })]: new Figure(figureType.bishop, color.black),
-      [posToStr({ x: 6, y: 0 })]: new Figure(figureType.knight, color.black),
-      [posToStr({ x: 7, y: 0 })]: new Figure(figureType.rook, color.black),
-      [posToStr({ x: 0, y: 1 })]: new Figure(figureType.pawn, color.black),
-      [posToStr({ x: 1, y: 1 })]: new Figure(figureType.pawn, color.black),
-      [posToStr({ x: 2, y: 1 })]: new Figure(figureType.pawn, color.black),
-      [posToStr({ x: 3, y: 1 })]: new Figure(figureType.pawn, color.black),
-      [posToStr({ x: 4, y: 1 })]: new Figure(figureType.pawn, color.black),
-      [posToStr({ x: 5, y: 1 })]: new Figure(figureType.pawn, color.black),
-      [posToStr({ x: 6, y: 1 })]: new Figure(figureType.pawn, color.black),
-      [posToStr({ x: 7, y: 1 })]: new Figure(figureType.pawn, color.black),
-      [posToStr({ x: 0, y: 7 })]: new Figure(figureType.rook, color.white),
-      [posToStr({ x: 1, y: 7 })]: new Figure(figureType.knight, color.white),
-      [posToStr({ x: 2, y: 7 })]: new Figure(figureType.bishop, color.white),
-      [posToStr({ x: 4, y: 7 })]: new Figure(figureType.king, color.white),
-      [posToStr({ x: 3, y: 7 })]: new Figure(figureType.queen, color.white),
-      [posToStr({ x: 5, y: 7 })]: new Figure(figureType.bishop, color.white),
-      [posToStr({ x: 6, y: 7 })]: new Figure(figureType.knight, color.white),
-      [posToStr({ x: 7, y: 7 })]: new Figure(figureType.rook, color.white),
-      [posToStr({ x: 0, y: 6 })]: new Figure(figureType.pawn, color.white),
-      [posToStr({ x: 1, y: 6 })]: new Figure(figureType.pawn, color.white),
-      [posToStr({ x: 2, y: 6 })]: new Figure(figureType.pawn, color.white),
-      [posToStr({ x: 3, y: 6 })]: new Figure(figureType.pawn, color.white),
-      [posToStr({ x: 4, y: 6 })]: new Figure(figureType.pawn, color.white),
-      [posToStr({ x: 5, y: 6 })]: new Figure(figureType.pawn, color.white),
-      [posToStr({ x: 6, y: 6 })]: new Figure(figureType.pawn, color.white),
-      [posToStr({ x: 7, y: 6 })]: new Figure(figureType.pawn, color.white),
-    };
+    this.figures = defaultFigurePosition;
   }
 
   private toggleTurn() {
-    this.currentTurn =
-      this.currentTurn === color.white ? color.black : color.white;
+    this.currentTurn = getOppositeColor(this.currentTurn);
   }
 
   public getFigure(position: Position): Figure | null {
-    return this.figures[posToStr(position)] ?? null;
+    return this.figures[posToPosStr(position)] ?? null;
   }
 
-  private basicMoveCheck(position: Position): boolean {
-    const withinTheBoard = checkWithinTheBoard(position);
-    const isCellFree = isNil(this.getFigure(position));
+  private moveCheck(position: Position): boolean {
+    const isCellFree = !this.getFigure(position);
 
-    return withinTheBoard && isCellFree;
+    return isCellFree;
   }
 
-  private kingMoveCheck(position: Position): boolean {
-    // TODO ADD CHECK FOR KING
-    return this.basicMoveCheck(position);
-  }
-
-  private static updateAvailableMoves(
+  private updateAvailableMoves(
     figure: Figure,
     directions: Position[][],
-    checkCallback: (position: Position) => boolean
+    isMoveAvailable: (position: Position) => boolean
   ): void {
     figure.availableMoves = [];
 
@@ -96,11 +62,11 @@ export class Model {
       for (let j = 0; j < directions[i].length; j++) {
         const position = directions[i][j];
 
-        if (checkCallback(position)) {
+        if (isMoveAvailable(position)) {
           figure.availableMoves.push(position);
-        } else {
-          break;
+          continue;
         }
+        break;
       }
     }
   }
@@ -111,90 +77,58 @@ export class Model {
     for (let i = 0; i < directions.length; i++) {
       for (let j = 0; j < directions[i].length; j++) {
         const position = directions[i][j];
-        const figureOnTheWay = this.figures[posToStr(position)];
-        if (isNil(figureOnTheWay)) continue;
 
-        const isEnemyOnTheWay = figureOnTheWay.color !== figure.color;
+        if (!isCellIndex(position.x) || !isCellIndex(position.y)) return;
 
-        if (isEnemyOnTheWay) {
-          figure.availableTakes.push(position);
+        let figureOnTheWay = this.getFigure(position);
+
+        if (figureOnTheWay) {
+          const isEnemyOnTheWay = figureOnTheWay.color !== figure.color;
+
+          if (isEnemyOnTheWay) {
+            figure.availableTakes.push(position);
+          }
+          break;
         }
-        break;
       }
     }
   }
 
+  private updateFigureState(figPosStr: PositionString, figure: Figure): void {
+    const figureStrPos = strToPos(figPosStr);
+
+    switch (figure.type) {
+      case FIGURE_TYPE.pawn:
+        figure.color === COLOR.white
+          ? this.whitePawnCheck(figure, figureStrPos)
+          : this.blackPawnCheck(figure, figureStrPos);
+        break;
+      case FIGURE_TYPE.knight:
+        this.knightCheck(figure, figureStrPos);
+        break;
+      case FIGURE_TYPE.rook:
+        this.rookCheck(figure, figureStrPos);
+        break;
+      case FIGURE_TYPE.bishop:
+        this.bishopCheck(figure, figureStrPos);
+        break;
+      case FIGURE_TYPE.queen:
+        this.queenCheck(figure, figureStrPos);
+        break;
+      case FIGURE_TYPE.king:
+        this.kingCheck(figure, figureStrPos);
+        break;
+    }
+  }
+
   public updateFieldState(): void {
-    Object.keys(this.figures).forEach((posStr) => {
-      const figure = this.figures[posStr];
-      const figurePosition = strToPos(posStr);
-      switch (figure.figureType) {
-        case figureType.pawn:
-          if (figure.color === color.white) {
-            Model.updateAvailableMoves(
-              figure,
-              whitePawnMoveDirections(figurePosition, figure.isMoved),
-              this.basicMoveCheck.bind(this)
-            );
-            this.updateAvailableTakes(
-              figure,
-              whitePawnTakeDirections(figurePosition)
-            );
-          } else {
-            Model.updateAvailableMoves(
-              figure,
-              blackPawnMoveDirections(figurePosition, figure.isMoved),
-              this.basicMoveCheck.bind(this)
-            );
-            this.updateAvailableTakes(
-              figure,
-              blackPawnTakeDirections(figurePosition)
-            );
-          }
-          break;
-        case figureType.knight:
-          Model.updateAvailableMoves(
-            figure,
-            knightDirections(figurePosition),
-            this.basicMoveCheck.bind(this)
-          );
-          this.updateAvailableTakes(figure, knightDirections(figurePosition));
-          break;
-        case figureType.rook:
-          Model.updateAvailableMoves(
-            figure,
-            rockDirections(figurePosition),
-            this.basicMoveCheck.bind(this)
-          );
-          this.updateAvailableTakes(figure, rockDirections(figurePosition));
-          break;
-        case figureType.bishop:
-          Model.updateAvailableMoves(
-            figure,
-            bishopDirections(figurePosition),
-            this.basicMoveCheck.bind(this)
-          );
-          this.updateAvailableTakes(figure, bishopDirections(figurePosition));
-          break;
-        case figureType.queen:
-          Model.updateAvailableMoves(
-            figure,
-            queenDirections(figurePosition),
-            this.basicMoveCheck.bind(this)
-          );
-          this.updateAvailableTakes(figure, queenDirections(figurePosition));
-          break;
-        case figureType.king:
-          Model.updateAvailableMoves(
-            figure,
-            kingDirections(figurePosition),
-            this.kingMoveCheck.bind(this)
-          );
-          this.updateAvailableTakes(figure, kingDirections(figurePosition));
-          break;
-      }
+    objectEntries(this.figures).forEach(([figPosStr, figure]) => {
+      if (!figure) return;
+      this.updateFigureState(figPosStr, figure);
     });
   }
+
+  public readonly initializeFieldState = this.updateFieldState;
 
   public bindModelChange(callback: (model: Model) => void): void {
     this.onModelChange = callback;
@@ -204,7 +138,7 @@ export class Model {
     this.onModelChange(model);
   }
 
-  public selectFigure({ x, y }: Position): void {
+  public trySelectFigure({ x, y }: Position): void {
     const selectedFigure = this.getFigure({ x, y });
 
     if (!selectedFigure) return;
@@ -218,12 +152,12 @@ export class Model {
     this.commitChanges(this);
   }
 
-  private tryMoveFigure(positionFrom: Position, positionTo: Position): void {
+  public tryMoveFigure(positionFrom: Position, positionTo: Position): void {
     const positionFromFigure = this.getFigure(positionFrom);
     const positionToFigure = this.getFigure(positionTo);
 
-    if (isNil(positionFromFigure)) return;
-    if (!isNil(positionToFigure)) return;
+    if (!positionFromFigure) return;
+    if (positionToFigure) return;
 
     const isAvailableToMove = positionFromFigure.availableMoves.some((move) => {
       return move.x === positionTo.x && move.y === positionTo.y;
@@ -231,8 +165,8 @@ export class Model {
 
     if (!isAvailableToMove) return;
 
-    this.figures[posToStr(positionTo)] = this.figures[posToStr(positionFrom)];
-    delete this.figures[posToStr(positionFrom)];
+    this.figures[posToPosStr(positionTo)] = this.figures[posToPosStr(positionFrom)];
+    delete this.figures[posToPosStr(positionFrom)];
 
     positionFromFigure.isMoved = true;
     this.toggleTurn();
@@ -241,33 +175,72 @@ export class Model {
     this.commitChanges(this);
   }
 
-  private tryTakeFigure(positionFrom: Position, positionTo: Position): void {
+  public tryTakeFigure(positionFrom: Position, positionTo: Position): void {
     const positionFromFigure = this.getFigure(positionFrom);
     const positionToFigure = this.getFigure(positionTo);
 
-    if (isNil(positionFromFigure)) return;
-    if (isNil(positionToFigure)) return;
+    if (!positionFromFigure) return;
+    if (!positionToFigure) return;
     if (positionFromFigure.color === positionToFigure.color) return;
 
     const isAvailableToTake = !positionFromFigure.availableTakes.some(
-      (take) => take.x === positionTo.x || take.y === positionTo.y
+      (availableTake) => availableTake.x === positionTo.x || availableTake.y === positionTo.y
     );
 
     if (isAvailableToTake) return;
 
-    this.figures[posToStr(positionTo)] = this.figures[posToStr(positionFrom)];
-    delete this.figures[posToStr(positionFrom)];
+    this.figures[posToPosStr(positionTo)] = this.figures[posToPosStr(positionFrom)];
+    delete this.figures[posToPosStr(positionFrom)];
 
     positionFromFigure.isMoved = true;
+
     this.toggleTurn();
     this.updateFieldState();
 
     this.commitChanges(this);
   }
 
-  public figureControl(positionFrom: Position, positionTo: Position): void {
-    this.tryMoveFigure(positionFrom, positionTo);
-    this.tryTakeFigure(positionFrom, positionTo);
+  public whitePawnCheck(figure: Figure, figurePosition: Position): void {
+    this.updateAvailableMoves(
+      figure,
+      whitePawnMoveDirections(figurePosition, figure.isMoved),
+      this.moveCheck.bind(this)
+    );
+    this.updateAvailableTakes(figure, whitePawnTakeDirections(figurePosition));
+  }
+
+  public blackPawnCheck(figure: Figure, figurePosition: Position): void {
+    this.updateAvailableMoves(
+      figure,
+      blackPawnMoveDirections(figurePosition, figure.isMoved),
+      this.moveCheck.bind(this)
+    );
+    this.updateAvailableTakes(figure, blackPawnTakeDirections(figurePosition));
+  }
+
+  public knightCheck(figure: Figure, figurePosition: Position): void {
+    this.updateAvailableMoves(figure, knightDirections(figurePosition), this.moveCheck.bind(this));
+    this.updateAvailableTakes(figure, knightDirections(figurePosition));
+  }
+
+  public rookCheck(figure: Figure, figurePosition: Position): void {
+    this.updateAvailableMoves(figure, rockDirections(figurePosition), this.moveCheck.bind(this));
+    this.updateAvailableTakes(figure, rockDirections(figurePosition));
+  }
+
+  public bishopCheck(figure: Figure, figurePosition: Position): void {
+    this.updateAvailableMoves(figure, bishopDirections(figurePosition), this.moveCheck.bind(this));
+    this.updateAvailableTakes(figure, bishopDirections(figurePosition));
+  }
+
+  public queenCheck(figure: Figure, figurePosition: Position): void {
+    this.updateAvailableMoves(figure, queenDirections(figurePosition), this.moveCheck.bind(this));
+    this.updateAvailableTakes(figure, queenDirections(figurePosition));
+  }
+
+  public kingCheck(figure: Figure, figurePosition: Position): void {
+    this.updateAvailableMoves(figure, kingDirections(figurePosition), this.moveCheck.bind(this));
+    this.updateAvailableTakes(figure, kingDirections(figurePosition));
   }
 }
 

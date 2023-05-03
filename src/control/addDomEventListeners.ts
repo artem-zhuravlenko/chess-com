@@ -1,16 +1,24 @@
-import { View } from "../View";
+import { View } from "../MVP/View";
 import { Model } from "../Model";
-import { strToNumber } from "../utils";
-import { Position } from "../types";
+import { CellIndex, Position } from "../types";
 import { isNil } from "lodash";
+import { isCellIndex } from "../helpers/isCellIndex";
 
-export const getClickedCellCoordinates = (
-  e: MouseEvent
-): Position | undefined => {
-  if (!(e.target instanceof HTMLElement)) return;
+const strToCellIndex = (str: string | undefined): CellIndex | null => {
+  if (isNil(str)) {
+    return null;
+  }
 
-  const x = strToNumber(e?.target?.dataset?.x);
-  const y = strToNumber(e?.target?.dataset?.y);
+  const num = Number(str);
+
+  return isCellIndex(num) ? num : null;
+};
+
+export const getClickedCellCoordinates = (e: MouseEvent): Position | undefined => {
+  if (!(e.target instanceof HTMLDivElement)) return;
+
+  const x = strToCellIndex(e.target.dataset?.x);
+  const y = strToCellIndex(e.target.dataset?.y);
 
   if (isNil(x) || isNil(y)) return;
 
@@ -23,7 +31,7 @@ export const addDomEventListeners = (model: Model, view: View) => {
 
     if (!clickedCell) return;
 
-    model.selectFigure(clickedCell);
+    model.trySelectFigure(clickedCell);
   };
 
   const handleMoveFigure = (e: MouseEvent): void => {
@@ -32,12 +40,12 @@ export const addDomEventListeners = (model: Model, view: View) => {
 
     if (!positionTo || !positionFrom) return;
 
-    const isSameCell =
-      positionFrom.x === positionTo.x && positionFrom.y === positionTo.y;
+    const isSameCell = positionFrom.x === positionTo.x && positionFrom.y === positionTo.y;
 
     if (isSameCell) return;
 
-    model.figureControl(positionFrom, positionTo);
+    model.tryMoveFigure(positionFrom, positionTo);
+    model.tryTakeFigure(positionFrom, positionTo);
   };
 
   view.$root.addEventListener("click", handleMoveFigure);

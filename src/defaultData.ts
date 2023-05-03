@@ -1,0 +1,38 @@
+import { posToPosStr } from "./helpers/posToStr";
+import { Figure } from "./Figure";
+import { FIGURE_TYPE, COLOR, FigurePositions } from "./types";
+
+export const defaultFigurePosition: FigurePositions = {
+  [posToPosStr({ x: 0, y: 0 })]: new Figure(FIGURE_TYPE.rook, COLOR.black),
+  [posToPosStr({ x: 1, y: 0 })]: new Figure(FIGURE_TYPE.knight, COLOR.black),
+  [posToPosStr({ x: 2, y: 0 })]: new Figure(FIGURE_TYPE.bishop, COLOR.black),
+  [posToPosStr({ x: 3, y: 0 })]: new Figure(FIGURE_TYPE.queen, COLOR.black),
+  [posToPosStr({ x: 4, y: 0 })]: new Figure(FIGURE_TYPE.king, COLOR.black),
+  [posToPosStr({ x: 5, y: 0 })]: new Figure(FIGURE_TYPE.bishop, COLOR.black),
+  [posToPosStr({ x: 6, y: 0 })]: new Figure(FIGURE_TYPE.knight, COLOR.black),
+  [posToPosStr({ x: 7, y: 0 })]: new Figure(FIGURE_TYPE.rook, COLOR.black),
+  [posToPosStr({ x: 0, y: 1 })]: new Figure(FIGURE_TYPE.pawn, COLOR.black),
+  [posToPosStr({ x: 1, y: 1 })]: new Figure(FIGURE_TYPE.pawn, COLOR.black),
+  [posToPosStr({ x: 2, y: 1 })]: new Figure(FIGURE_TYPE.pawn, COLOR.black),
+  [posToPosStr({ x: 3, y: 1 })]: new Figure(FIGURE_TYPE.pawn, COLOR.black),
+  [posToPosStr({ x: 4, y: 1 })]: new Figure(FIGURE_TYPE.pawn, COLOR.black),
+  [posToPosStr({ x: 5, y: 1 })]: new Figure(FIGURE_TYPE.pawn, COLOR.black),
+  [posToPosStr({ x: 6, y: 1 })]: new Figure(FIGURE_TYPE.pawn, COLOR.black),
+  [posToPosStr({ x: 7, y: 1 })]: new Figure(FIGURE_TYPE.pawn, COLOR.black),
+  [posToPosStr({ x: 0, y: 7 })]: new Figure(FIGURE_TYPE.rook, COLOR.white),
+  [posToPosStr({ x: 1, y: 7 })]: new Figure(FIGURE_TYPE.knight, COLOR.white),
+  [posToPosStr({ x: 2, y: 7 })]: new Figure(FIGURE_TYPE.bishop, COLOR.white),
+  [posToPosStr({ x: 4, y: 7 })]: new Figure(FIGURE_TYPE.king, COLOR.white),
+  [posToPosStr({ x: 3, y: 7 })]: new Figure(FIGURE_TYPE.queen, COLOR.white),
+  [posToPosStr({ x: 5, y: 7 })]: new Figure(FIGURE_TYPE.bishop, COLOR.white),
+  [posToPosStr({ x: 6, y: 7 })]: new Figure(FIGURE_TYPE.knight, COLOR.white),
+  [posToPosStr({ x: 7, y: 7 })]: new Figure(FIGURE_TYPE.rook, COLOR.white),
+  [posToPosStr({ x: 0, y: 6 })]: new Figure(FIGURE_TYPE.pawn, COLOR.white),
+  [posToPosStr({ x: 1, y: 6 })]: new Figure(FIGURE_TYPE.pawn, COLOR.white),
+  [posToPosStr({ x: 2, y: 6 })]: new Figure(FIGURE_TYPE.pawn, COLOR.white),
+  [posToPosStr({ x: 3, y: 6 })]: new Figure(FIGURE_TYPE.pawn, COLOR.white),
+  [posToPosStr({ x: 4, y: 6 })]: new Figure(FIGURE_TYPE.pawn, COLOR.white),
+  [posToPosStr({ x: 5, y: 6 })]: new Figure(FIGURE_TYPE.pawn, COLOR.white),
+  [posToPosStr({ x: 6, y: 6 })]: new Figure(FIGURE_TYPE.pawn, COLOR.white),
+  [posToPosStr({ x: 7, y: 6 })]: new Figure(FIGURE_TYPE.pawn, COLOR.white),
+};

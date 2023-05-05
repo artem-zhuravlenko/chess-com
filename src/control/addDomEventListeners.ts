@@ -1,8 +1,9 @@
 import { View } from "../MVP/View";
 import { Model } from "../Model";
-import { CellIndex, Position } from "../types";
+import { CellIndex } from "../types";
+import { Position } from "../Position";
 import { isNil } from "lodash";
-import { isCellIndex } from "../helpers/isCellIndex";
+import { isCellIndex } from "../utills/isCellIndex";
 
 const strToCellIndex = (str: string | undefined): CellIndex | null => {
   if (isNil(str)) {
@@ -22,7 +23,7 @@ export const getClickedCellCoordinates = (e: MouseEvent): Position | undefined =
 
   if (isNil(x) || isNil(y)) return;
 
-  return { x, y };
+  return new Position({ x, y });
 };
 
 export const addDomEventListeners = (model: Model, view: View) => {

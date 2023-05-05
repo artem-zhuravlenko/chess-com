@@ -23,13 +23,6 @@ export const FIGURE_TYPE = {
 
 export type FigureType = typeof FIGURE_TYPE[keyof typeof FIGURE_TYPE];
 
-export interface Position<T = CellIndex> {
-  x: T;
-  y: T;
-}
-
-export type FigurePositions = Partial<Record<PositionString, Figure>>;
-
 export type CellIndex = typeof cellIndexList[number];
 
 export const cellIndexList = [0, 1, 2, 3, 4, 5, 6, 7] as const;
@@ -45,3 +38,5 @@ export const figureClassColorList = ["w", "b"] as const;
 export type FigureClassColor = typeof figureClassColorList[number];
 
 export type FigureClassName = `${FigureClassColor}${FigureClassType}`;
+
+export type FigurePositionMap = Map<PositionString, Figure>;

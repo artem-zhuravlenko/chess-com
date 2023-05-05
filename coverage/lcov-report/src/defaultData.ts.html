@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>38/38</span>
+                <span class='fraction'>40/40</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>38/38</span>
+                <span class='fraction'>40/40</span>
             </div>
         
             
@@ -101,7 +101,9 @@
 <a name='L36'></a><a href='#L36'>36</a>
 <a name='L37'></a><a href='#L37'>37</a>
 <a name='L38'></a><a href='#L38'>38</a>
-<a name='L39'></a><a href='#L39'>39</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -139,44 +141,48 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { posToPosStr } from "./helpers/posToStr";
-import { Figure } from "./Figure";
-import { FIGURE_TYPE, COLOR, FigurePositions } from "./types";
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Figure } from "./Figure";
+import { Position } from "./Position";
+import { FIGURE_TYPE, COLOR, PositionString } from "./types";
 &nbsp;
-export const defaultFigurePosition: FigurePositions = {
-  [posToPosStr({ x: 0, y: 0 })]: new Figure(FIGURE_TYPE.rook, COLOR.black),
-  [posToPosStr({ x: 1, y: 0 })]: new Figure(FIGURE_TYPE.knight, COLOR.black),
-  [posToPosStr({ x: 2, y: 0 })]: new Figure(FIGURE_TYPE.bishop, COLOR.black),
-  [posToPosStr({ x: 3, y: 0 })]: new Figure(FIGURE_TYPE.queen, COLOR.black),
-  [posToPosStr({ x: 4, y: 0 })]: new Figure(FIGURE_TYPE.king, COLOR.black),
-  [posToPosStr({ x: 5, y: 0 })]: new Figure(FIGURE_TYPE.bishop, COLOR.black),
-  [posToPosStr({ x: 6, y: 0 })]: new Figure(FIGURE_TYPE.knight, COLOR.black),
-  [posToPosStr({ x: 7, y: 0 })]: new Figure(FIGURE_TYPE.rook, COLOR.black),
-  [posToPosStr({ x: 0, y: 1 })]: new Figure(FIGURE_TYPE.pawn, COLOR.black),
-  [posToPosStr({ x: 1, y: 1 })]: new Figure(FIGURE_TYPE.pawn, COLOR.black),
-  [posToPosStr({ x: 2, y: 1 })]: new Figure(FIGURE_TYPE.pawn, COLOR.black),
-  [posToPosStr({ x: 3, y: 1 })]: new Figure(FIGURE_TYPE.pawn, COLOR.black),
-  [posToPosStr({ x: 4, y: 1 })]: new Figure(FIGURE_TYPE.pawn, COLOR.black),
-  [posToPosStr({ x: 5, y: 1 })]: new Figure(FIGURE_TYPE.pawn, COLOR.black),
-  [posToPosStr({ x: 6, y: 1 })]: new Figure(FIGURE_TYPE.pawn, COLOR.black),
-  [posToPosStr({ x: 7, y: 1 })]: new Figure(FIGURE_TYPE.pawn, COLOR.black),
-  [posToPosStr({ x: 0, y: 7 })]: new Figure(FIGURE_TYPE.rook, COLOR.white),
-  [posToPosStr({ x: 1, y: 7 })]: new Figure(FIGURE_TYPE.knight, COLOR.white),
-  [posToPosStr({ x: 2, y: 7 })]: new Figure(FIGURE_TYPE.bishop, COLOR.white),
-  [posToPosStr({ x: 4, y: 7 })]: new Figure(FIGURE_TYPE.king, COLOR.white),
-  [posToPosStr({ x: 3, y: 7 })]: new Figure(FIGURE_TYPE.queen, COLOR.white),
-  [posToPosStr({ x: 5, y: 7 })]: new Figure(FIGURE_TYPE.bishop, COLOR.white),
-  [posToPosStr({ x: 6, y: 7 })]: new Figure(FIGURE_TYPE.knight, COLOR.white),
-  [posToPosStr({ x: 7, y: 7 })]: new Figure(FIGURE_TYPE.rook, COLOR.white),
-  [posToPosStr({ x: 0, y: 6 })]: new Figure(FIGURE_TYPE.pawn, COLOR.white),
-  [posToPosStr({ x: 1, y: 6 })]: new Figure(FIGURE_TYPE.pawn, COLOR.white),
-  [posToPosStr({ x: 2, y: 6 })]: new Figure(FIGURE_TYPE.pawn, COLOR.white),
-  [posToPosStr({ x: 3, y: 6 })]: new Figure(FIGURE_TYPE.pawn, COLOR.white),
-  [posToPosStr({ x: 4, y: 6 })]: new Figure(FIGURE_TYPE.pawn, COLOR.white),
-  [posToPosStr({ x: 5, y: 6 })]: new Figure(FIGURE_TYPE.pawn, COLOR.white),
-  [posToPosStr({ x: 6, y: 6 })]: new Figure(FIGURE_TYPE.pawn, COLOR.white),
-  [posToPosStr({ x: 7, y: 6 })]: new Figure(FIGURE_TYPE.pawn, COLOR.white),
-};
+const defaultFigurePositionArray: Array&lt;[PositionString, Figure]&gt; = [
+  [new Position({ x: 0, y: 0 }).toString(), new Figure(FIGURE_TYPE.rook, COLOR.black)],
+  [new Position({ x: 1, y: 0 }).toString(), new Figure(FIGURE_TYPE.knight, COLOR.black)],
+  [new Position({ x: 2, y: 0 }).toString(), new Figure(FIGURE_TYPE.bishop, COLOR.black)],
+  [new Position({ x: 3, y: 0 }).toString(), new Figure(FIGURE_TYPE.queen, COLOR.black)],
+  [new Position({ x: 4, y: 0 }).toString(), new Figure(FIGURE_TYPE.king, COLOR.black)],
+  [new Position({ x: 5, y: 0 }).toString(), new Figure(FIGURE_TYPE.bishop, COLOR.black)],
+  [new Position({ x: 6, y: 0 }).toString(), new Figure(FIGURE_TYPE.knight, COLOR.black)],
+  [new Position({ x: 7, y: 0 }).toString(), new Figure(FIGURE_TYPE.rook, COLOR.black)],
+  [new Position({ x: 0, y: 1 }).toString(), new Figure(FIGURE_TYPE.pawn, COLOR.black)],
+  [new Position({ x: 1, y: 1 }).toString(), new Figure(FIGURE_TYPE.pawn, COLOR.black)],
+  [new Position({ x: 2, y: 1 }).toString(), new Figure(FIGURE_TYPE.pawn, COLOR.black)],
+  [new Position({ x: 3, y: 1 }).toString(), new Figure(FIGURE_TYPE.pawn, COLOR.black)],
+  [new Position({ x: 4, y: 1 }).toString(), new Figure(FIGURE_TYPE.pawn, COLOR.black)],
+  [new Position({ x: 5, y: 1 }).toString(), new Figure(FIGURE_TYPE.pawn, COLOR.black)],
+  [new Position({ x: 6, y: 1 }).toString(), new Figure(FIGURE_TYPE.pawn, COLOR.black)],
+  [new Position({ x: 7, y: 1 }).toString(), new Figure(FIGURE_TYPE.pawn, COLOR.black)],
+  [new Position({ x: 0, y: 7 }).toString(), new Figure(FIGURE_TYPE.rook, COLOR.white)],
+  [new Position({ x: 1, y: 7 }).toString(), new Figure(FIGURE_TYPE.knight, COLOR.white)],
+  [new Position({ x: 2, y: 7 }).toString(), new Figure(FIGURE_TYPE.bishop, COLOR.white)],
+  [new Position({ x: 4, y: 7 }).toString(), new Figure(FIGURE_TYPE.king, COLOR.white)],
+  [new Position({ x: 3, y: 7 }).toString(), new Figure(FIGURE_TYPE.queen, COLOR.white)],
+  [new Position({ x: 5, y: 7 }).toString(), new Figure(FIGURE_TYPE.bishop, COLOR.white)],
+  [new Position({ x: 6, y: 7 }).toString(), new Figure(FIGURE_TYPE.knight, COLOR.white)],
+  [new Position({ x: 7, y: 7 }).toString(), new Figure(FIGURE_TYPE.rook, COLOR.white)],
+  [new Position({ x: 0, y: 6 }).toString(), new Figure(FIGURE_TYPE.pawn, COLOR.white)],
+  [new Position({ x: 1, y: 6 }).toString(), new Figure(FIGURE_TYPE.pawn, COLOR.white)],
+  [new Position({ x: 2, y: 6 }).toString(), new Figure(FIGURE_TYPE.pawn, COLOR.white)],
+  [new Position({ x: 3, y: 6 }).toString(), new Figure(FIGURE_TYPE.pawn, COLOR.white)],
+  [new Position({ x: 4, y: 6 }).toString(), new Figure(FIGURE_TYPE.pawn, COLOR.white)],
+  [new Position({ x: 5, y: 6 }).toString(), new Figure(FIGURE_TYPE.pawn, COLOR.white)],
+  [new Position({ x: 6, y: 6 }).toString(), new Figure(FIGURE_TYPE.pawn, COLOR.white)],
+  [new Position({ x: 7, y: 6 }).toString(), new Figure(FIGURE_TYPE.pawn, COLOR.white)],
+];
+&nbsp;
+export const defaultFigurePosition = new Map&lt;PositionString, Figure&gt;(defaultFigurePositionArray);
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -184,7 +190,7 @@ export const defaultFigurePosition: FigurePositions = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-05-03T16:25:17.034Z
+                at 2023-05-05T06:14:14.976Z
             </div>
         <script src="../prettify.js"></script>
         <script>

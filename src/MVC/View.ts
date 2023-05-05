@@ -1,11 +1,12 @@
 import { isNil } from "lodash";
 import { Model } from "../Model";
-import { CELL_IN_ROW, CELL_SIZE_PX, Position, Color, CellIndex } from "../types";
-import { createElement } from "../helpers/createElement";
-import { getElement } from "../helpers/getElement";
-import { convertToFigureCSSClass } from "../helpers/convertToFigureCSSClass";
-import { cellCoordinatesSelector } from "../helpers/cellCoordinatesSelector";
-import { cellColor } from "../helpers/cellColor";
+import { CELL_SIZE_PX, Color, cellIndexList } from "../types";
+import { Position } from "../Position";
+import { createElement } from "../utills/createElement";
+import { getElement } from "../utills/getElement";
+import { convertToFigureCSSClass } from "../utills/convertToFigureCSSClass";
+import { cellCoordinatesSelector } from "../utills/cellCoordinatesSelector";
+import { cellColor } from "../utills/cellColor";
 
 export const createCell = (color: Color): HTMLElement => {
   const $cell = createElement("div", "cell");
@@ -34,12 +35,13 @@ export class View {
   }
 
   private drawBoard(model: Model): void {
-    for (let i = 0; i < CELL_IN_ROW; i++) {
-      for (let j = 0; j < CELL_IN_ROW; j++) {
-        this.drawCell(model, {
-          x: i as CellIndex,
-          y: j as CellIndex,
+    for (let i of cellIndexList) {
+      for (let j of cellIndexList) {
+        const position = new Position({
+          x: i,
+          y: j,
         });
+        this.drawCell(model, position);
       }
     }
   }
@@ -52,7 +54,11 @@ export class View {
     if (isNil(selectedFigure)) return;
 
     selectedFigure.availableMoves.forEach((move) => {
-      const $cell = this.$chessField.querySelector(cellCoordinatesSelector(move.x, move.y));
+      const positionToMove = Position.posStrToObj(move);
+
+      const $cell = this.$chessField.querySelector(
+        cellCoordinatesSelector(positionToMove.x, positionToMove.y)
+      );
       if ($cell) {
         $cell.classList.add("availableMove");
       }
@@ -67,7 +73,11 @@ export class View {
     if (isNil(selectedFigure)) return;
 
     selectedFigure.availableTakes.forEach((move) => {
-      const $cell = this.$chessField.querySelector(cellCoordinatesSelector(move.x, move.y));
+      const positionToTake = Position.posStrToObj(move);
+
+      const $cell = this.$chessField.querySelector(
+        cellCoordinatesSelector(positionToTake.x, positionToTake.y)
+      );
       if ($cell) {
         $cell.classList.add("availableTake");
       }

@@ -1,4 +1,4 @@
-import { CELL_SIZE_PX, Color } from "../../types";
+import { CELL_SIZE_PX } from "../../types";
 import { Position } from "../../Position";
 import { createElement } from "../../utills/createElement";
 import { getElement } from "../../utills/getElement";
@@ -6,13 +6,6 @@ import { objectEntries } from "../../utills/objectEntries";
 import { convertToFigureCSSClass } from "../../utills/convertToFigureCSSClass";
 import { cellColor } from "../../utills/cellColor";
 import { PresentationModel, CellData } from "../Presenter";
-
-export const createCell = (color: Color): HTMLElement => {
-  const $cell = createElement("div", "cell");
-  $cell.classList.add(color);
-
-  return $cell;
-};
 
 export class View {
   $root: HTMLElement;
@@ -39,7 +32,7 @@ export class View {
   }
 
   private drawCell(position: Position, cellData: CellData): void {
-    const $cell = createCell(cellColor(position));
+    const $cell = createElement('div', ['cell', cellColor(position)]);
 
     $cell.setAttribute("data-x", position.x.toString());
     $cell.setAttribute("data-y", position.y.toString());

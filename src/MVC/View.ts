@@ -1,19 +1,12 @@
 import { isNil } from "lodash";
 import { Model } from "../Model";
-import { CELL_SIZE_PX, Color, cellIndexList } from "../types";
+import { CELL_SIZE_PX, cellIndexList } from "../types";
 import { Position } from "../Position";
 import { createElement } from "../utills/createElement";
 import { getElement } from "../utills/getElement";
 import { convertToFigureCSSClass } from "../utills/convertToFigureCSSClass";
 import { cellCoordinatesSelector } from "../utills/cellCoordinatesSelector";
 import { cellColor } from "../utills/cellColor";
-
-export const createCell = (color: Color): HTMLElement => {
-  const $cell = createElement("div", "cell");
-  $cell.classList.add(color);
-
-  return $cell;
-};
 
 export class View {
   readonly $root: HTMLElement;
@@ -85,7 +78,7 @@ export class View {
   }
 
   private drawCell(model: Model, position: Position): void {
-    const $cell = createCell(cellColor(position));
+    const $cell = createElement("div", ["cell", cellColor(position)]);
 
     $cell.setAttribute("data-x", position.x.toString());
     $cell.setAttribute("data-y", position.y.toString());

@@ -2,9 +2,24 @@ import { isWithinTheBoard } from ".";
 import { Position } from "../../Position";
 
 describe(isWithinTheBoard, () => {
-  it("works with {x: 0, y: 0}", () => {
-    const position = new Position({ x: 0, y: 0 });
+  it("Should return true, if position is within the chess board", () => {
+    const testList = [
+      {
+        position: new Position({ x: 0, y: 0 }),
+        result: true,
+      },
+      {
+        position: new Position({ x: 3, y: 0 }),
+        result: true,
+      },
+      {
+        position: new Position({ x: 0, y: 4 }),
+        result: true,
+      },
+    ];
 
-    expect(isWithinTheBoard(position)).toBe(true);
+    testList.forEach((test) => {
+      expect(isWithinTheBoard(test.position)).toBe(test.result);
+    });
   });
 });

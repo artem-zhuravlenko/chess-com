@@ -1,12 +1,10 @@
 import { isFigureClass } from ".";
 
 describe(isFigureClass, () => {
-  it("valid", () => {
+  it("Should return check css class names for figure", () => {
     expect(isFigureClass("bk")).toBe(true);
     expect(isFigureClass("wn")).toBe(true);
     expect(isFigureClass("bp")).toBe(true);
-  });
-  it("invalid", () => {
     expect(isFigureClass("bs")).toBe(false);
     expect(isFigureClass("gb")).toBe(false);
     expect(isFigureClass("b k")).toBe(false);

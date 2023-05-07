@@ -2,7 +2,6 @@ import { Model } from "../../Model";
 import { View } from "../View";
 import { FigureType, Color, PositionString, cellIndexList } from "../../types";
 import { Position } from "../../Position";
-import _ from "lodash";
 
 type ApplyControl = (model: Model, view: View) => void;
 
@@ -21,8 +20,6 @@ export type PresentationModel = {
 };
 
 export const modelForView = (model: Model): PresentationModel => {
-  console.log(model, _.cloneDeep(model));
-
   const result: PresentationModel = {};
 
   const figureOnSelectedCell = model.selectedCell
@@ -57,6 +54,7 @@ export const modelForView = (model: Model): PresentationModel => {
     }
   }
 
+  console.log(model);
   return result;
 };
 

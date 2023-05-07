@@ -19,7 +19,7 @@ describe(resolveFigureClassType, () => {
 });
 
 describe(resolveFigureClassType, () => {
-  it("", () => {
+  it("Should return right figure class type", () => {
     expect(resolveFigureClassType("pawn")).toBe("p");
     expect(resolveFigureClassType("king")).toBe("k");
     expect(resolveFigureClassType("bishop")).toBe("b");

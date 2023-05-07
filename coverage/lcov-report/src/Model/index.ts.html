@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">37.86% </span>
+                <span class="strong">33.45% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>103/272</span>
+                <span class='fraction'>90/269</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
+                <span class="strong">81.81% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>10/15</span>
+                <span class='fraction'>9/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">30.43% </span>
+                <span class="strong">26.08% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>7/23</span>
+                <span class='fraction'>6/23</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">37.86% </span>
+                <span class="strong">33.45% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>103/272</span>
+                <span class='fraction'>90/269</span>
             </div>
         
             
@@ -332,14 +332,7 @@
 <a name='L267'></a><a href='#L267'>267</a>
 <a name='L268'></a><a href='#L268'>268</a>
 <a name='L269'></a><a href='#L269'>269</a>
-<a name='L270'></a><a href='#L270'>270</a>
-<a name='L271'></a><a href='#L271'>271</a>
-<a name='L272'></a><a href='#L272'>272</a>
-<a name='L273'></a><a href='#L273'>273</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<a name='L270'></a><a href='#L270'>270</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -379,8 +372,8 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -467,6 +460,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -493,15 +487,15 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -611,17 +605,13 @@
 import { Position } from "../Position";
 import { isCellIndex } from "../utills/isCellIndex";
 import { Figure } from "../Figure";
-import {
-  whitePawnMoveDirections,
-  blackPawnMoveDirections,
-  whitePawnTakeDirections,
-  blackPawnTakeDirections,
-  knightDirections,
-  bishopDirections,
-  rockDirections,
-  queenDirections,
-  kingDirections,
-} from "../moveDirections";
+import { rock } from "../moveDirections/rock";
+import { queen } from "../moveDirections/queen";
+import { king } from "../moveDirections/king";
+import { whitePawn } from "../moveDirections/whitePawn";
+import { blackPawn } from "../moveDirections/blackPawn";
+import { bishop } from "../moveDirections/bishop";
+import { knight } from "../moveDirections/knight";
 &nbsp;
 type FigureWithPosition = { figure: Figure; position: Position };
 &nbsp;
@@ -736,6 +726,7 @@ export class Model {
 <span class="cstat-no" title="statement not covered" >        figure,</span>
 <span class="cstat-no" title="statement not covered" >        position: Position.posStrToObj(positionStr),</span>
 <span class="cstat-no" title="statement not covered" >      };</span>
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >      this.updateFigureState(figureWithPositon);</span>
 <span class="cstat-no" title="statement not covered" >    });</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
@@ -764,17 +755,17 @@ export class Model {
     this.commitChanges(this);
   }
 &nbsp;
-  public tryMoveFigure(positionFrom: Position, positionTo: Position): void {
-    const positionFromFigure = this.getFigure(positionFrom);
-    const positionToFigure = this.getFigure(positionTo);
-&nbsp;
-    if (!positionFromFigure) <span class="branch-0 cbranch-no" title="branch not covered" >return;</span>
-    if (positionToFigure) <span class="branch-0 cbranch-no" title="branch not covered" >return;</span>
-&nbsp;
-    const isAvailableToMove = positionFromFigure.availableMoves.has(positionTo.toString());
-&nbsp;
-    if (!isAvailableToMove) return;
-<span class="cstat-no" title="statement not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span>
+  public <span class="fstat-no" title="function not covered" >tryMoveFigure(positionFrom: Position, positionTo: Position): void {</span>
+<span class="cstat-no" title="statement not covered" >    const positionFromFigure = this.getFigure(positionFrom);</span>
+<span class="cstat-no" title="statement not covered" >    const positionToFigure = this.getFigure(positionTo);</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    if (!positionFromFigure) return;</span>
+<span class="cstat-no" title="statement not covered" >    if (positionToFigure) return;</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    const isAvailableToMove = positionFromFigure.availableMoves.has(positionTo.toString());</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    if (!isAvailableToMove) return;</span>
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    const figureToMove = this.figures.get(positionFrom.toString());</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    if (!figureToMove) return;</span>
@@ -819,64 +810,64 @@ export class Model {
   public <span class="fstat-no" title="function not covered" >whitePawnUpdate(figWithPos: FigureWithPosition): void {</span>
 <span class="cstat-no" title="statement not covered" >    this.updateAvailableMoves(</span>
 <span class="cstat-no" title="statement not covered" >      figWithPos.figure,</span>
-<span class="cstat-no" title="statement not covered" >      whitePawnMoveDirections(figWithPos.position, figWithPos.figure.isMoved),</span>
+<span class="cstat-no" title="statement not covered" >      whitePawn.moveDirections(figWithPos.position, figWithPos.figure.isMoved),</span>
 <span class="cstat-no" title="statement not covered" >      this.moveCheck.bind(this)</span>
 <span class="cstat-no" title="statement not covered" >    );</span>
-<span class="cstat-no" title="statement not covered" >    this.updateAvailableTakes(figWithPos.figure, whitePawnTakeDirections(figWithPos.position));</span>
+<span class="cstat-no" title="statement not covered" >    this.updateAvailableTakes(figWithPos.figure, whitePawn.takeDirections(figWithPos.position));</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 &nbsp;
   public <span class="fstat-no" title="function not covered" >blackPawnUpdate(figWithPos: FigureWithPosition): void {</span>
 <span class="cstat-no" title="statement not covered" >    this.updateAvailableMoves(</span>
 <span class="cstat-no" title="statement not covered" >      figWithPos.figure,</span>
-<span class="cstat-no" title="statement not covered" >      blackPawnMoveDirections(figWithPos.position, figWithPos.figure.isMoved),</span>
+<span class="cstat-no" title="statement not covered" >      blackPawn.move(figWithPos.position, figWithPos.figure.isMoved),</span>
 <span class="cstat-no" title="statement not covered" >      this.moveCheck.bind(this)</span>
 <span class="cstat-no" title="statement not covered" >    );</span>
-<span class="cstat-no" title="statement not covered" >    this.updateAvailableTakes(figWithPos.figure, blackPawnTakeDirections(figWithPos.position));</span>
+<span class="cstat-no" title="statement not covered" >    this.updateAvailableTakes(figWithPos.figure, blackPawn.take(figWithPos.position));</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 &nbsp;
   public <span class="fstat-no" title="function not covered" >knightUpdate(figWithPos: FigureWithPosition): void {</span>
 <span class="cstat-no" title="statement not covered" >    this.updateAvailableMoves(</span>
 <span class="cstat-no" title="statement not covered" >      figWithPos.figure,</span>
-<span class="cstat-no" title="statement not covered" >      knightDirections(figWithPos.position),</span>
+<span class="cstat-no" title="statement not covered" >      knight.move(figWithPos.position),</span>
 <span class="cstat-no" title="statement not covered" >      this.moveCheck.bind(this)</span>
 <span class="cstat-no" title="statement not covered" >    );</span>
-<span class="cstat-no" title="statement not covered" >    this.updateAvailableTakes(figWithPos.figure, knightDirections(figWithPos.position));</span>
+<span class="cstat-no" title="statement not covered" >    this.updateAvailableTakes(figWithPos.figure, knight.take(figWithPos.position));</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 &nbsp;
   public <span class="fstat-no" title="function not covered" >rookUpdate(figWithPos: FigureWithPosition): void {</span>
 <span class="cstat-no" title="statement not covered" >    this.updateAvailableMoves(</span>
 <span class="cstat-no" title="statement not covered" >      figWithPos.figure,</span>
-<span class="cstat-no" title="statement not covered" >      rockDirections(figWithPos.position),</span>
+<span class="cstat-no" title="statement not covered" >      rock.move(figWithPos.position),</span>
 <span class="cstat-no" title="statement not covered" >      this.moveCheck.bind(this)</span>
 <span class="cstat-no" title="statement not covered" >    );</span>
-<span class="cstat-no" title="statement not covered" >    this.updateAvailableTakes(figWithPos.figure, rockDirections(figWithPos.position));</span>
+<span class="cstat-no" title="statement not covered" >    this.updateAvailableTakes(figWithPos.figure, rock.take(figWithPos.position));</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 &nbsp;
   public <span class="fstat-no" title="function not covered" >bishopUpdate(figWithPos: FigureWithPosition): void {</span>
 <span class="cstat-no" title="statement not covered" >    this.updateAvailableMoves(</span>
 <span class="cstat-no" title="statement not covered" >      figWithPos.figure,</span>
-<span class="cstat-no" title="statement not covered" >      bishopDirections(figWithPos.position),</span>
+<span class="cstat-no" title="statement not covered" >      bishop.move(figWithPos.position),</span>
 <span class="cstat-no" title="statement not covered" >      this.moveCheck.bind(this)</span>
 <span class="cstat-no" title="statement not covered" >    );</span>
-<span class="cstat-no" title="statement not covered" >    this.updateAvailableTakes(figWithPos.figure, bishopDirections(figWithPos.position));</span>
+<span class="cstat-no" title="statement not covered" >    this.updateAvailableTakes(figWithPos.figure, bishop.take(figWithPos.position));</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 &nbsp;
   public <span class="fstat-no" title="function not covered" >queenUpdate(figWithPos: FigureWithPosition): void {</span>
 <span class="cstat-no" title="statement not covered" >    this.updateAvailableMoves(</span>
 <span class="cstat-no" title="statement not covered" >      figWithPos.figure,</span>
-<span class="cstat-no" title="statement not covered" >      queenDirections(figWithPos.position),</span>
+<span class="cstat-no" title="statement not covered" >      queen.move(figWithPos.position),</span>
 <span class="cstat-no" title="statement not covered" >      this.moveCheck.bind(this)</span>
 <span class="cstat-no" title="statement not covered" >    );</span>
-<span class="cstat-no" title="statement not covered" >    this.updateAvailableTakes(figWithPos.figure, queenDirections(figWithPos.position));</span>
+<span class="cstat-no" title="statement not covered" >    this.updateAvailableTakes(figWithPos.figure, queen.take(figWithPos.position));</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 &nbsp;
   public <span class="fstat-no" title="function not covered" >kingUpdate(figWithPos: FigureWithPosition): void {</span>
 <span class="cstat-no" title="statement not covered" >    this.updateAvailableMoves(</span>
 <span class="cstat-no" title="statement not covered" >      figWithPos.figure,</span>
-<span class="cstat-no" title="statement not covered" >      kingDirections(figWithPos.position),</span>
+<span class="cstat-no" title="statement not covered" >      king.move(figWithPos.position),</span>
 <span class="cstat-no" title="statement not covered" >      this.moveCheck.bind(this)</span>
 <span class="cstat-no" title="statement not covered" >    );</span>
-<span class="cstat-no" title="statement not covered" >    this.updateAvailableTakes(figWithPos.figure, kingDirections(figWithPos.position));</span>
+<span class="cstat-no" title="statement not covered" >    this.updateAvailableTakes(figWithPos.figure, king.take(figWithPos.position));</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -886,7 +877,7 @@ export class Model {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-05-05T06:14:14.976Z
+                at 2023-05-07T10:49:56.995Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

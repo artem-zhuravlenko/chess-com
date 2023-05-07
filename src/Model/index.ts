@@ -2,17 +2,13 @@ import { Color, COLOR, FIGURE_TYPE, PositionString, FigurePositionMap } from "..
 import { Position } from "../Position";
 import { isCellIndex } from "../utills/isCellIndex";
 import { Figure } from "../Figure";
-import {
-  whitePawnMoveDirections,
-  blackPawnMoveDirections,
-  whitePawnTakeDirections,
-  blackPawnTakeDirections,
-  knightDirections,
-  bishopDirections,
-  rockDirections,
-  queenDirections,
-  kingDirections,
-} from "../moveDirections";
+import { rock } from "../moveDirections/rock";
+import { queen } from "../moveDirections/queen";
+import { king } from "../moveDirections/king";
+import { whitePawn } from "../moveDirections/whitePawn";
+import { blackPawn } from "../moveDirections/blackPawn";
+import { bishop } from "../moveDirections/bishop";
+import { knight } from "../moveDirections/knight";
 
 type FigureWithPosition = { figure: Figure; position: Position };
 
@@ -127,6 +123,7 @@ export class Model {
         figure,
         position: Position.posStrToObj(positionStr),
       };
+
       this.updateFigureState(figureWithPositon);
     });
   }
@@ -210,63 +207,63 @@ export class Model {
   public whitePawnUpdate(figWithPos: FigureWithPosition): void {
     this.updateAvailableMoves(
       figWithPos.figure,
-      whitePawnMoveDirections(figWithPos.position, figWithPos.figure.isMoved),
+      whitePawn.moveDirections(figWithPos.position, figWithPos.figure.isMoved),
       this.moveCheck.bind(this)
     );
-    this.updateAvailableTakes(figWithPos.figure, whitePawnTakeDirections(figWithPos.position));
+    this.updateAvailableTakes(figWithPos.figure, whitePawn.takeDirections(figWithPos.position));
   }
 
   public blackPawnUpdate(figWithPos: FigureWithPosition): void {
     this.updateAvailableMoves(
       figWithPos.figure,
-      blackPawnMoveDirections(figWithPos.position, figWithPos.figure.isMoved),
+      blackPawn.move(figWithPos.position, figWithPos.figure.isMoved),
       this.moveCheck.bind(this)
     );
-    this.updateAvailableTakes(figWithPos.figure, blackPawnTakeDirections(figWithPos.position));
+    this.updateAvailableTakes(figWithPos.figure, blackPawn.take(figWithPos.position));
   }
 
   public knightUpdate(figWithPos: FigureWithPosition): void {
     this.updateAvailableMoves(
       figWithPos.figure,
-      knightDirections(figWithPos.position),
+      knight.move(figWithPos.position),
       this.moveCheck.bind(this)
     );
-    this.updateAvailableTakes(figWithPos.figure, knightDirections(figWithPos.position));
+    this.updateAvailableTakes(figWithPos.figure, knight.take(figWithPos.position));
   }
 
   public rookUpdate(figWithPos: FigureWithPosition): void {
     this.updateAvailableMoves(
       figWithPos.figure,
-      rockDirections(figWithPos.position),
+      rock.move(figWithPos.position),
       this.moveCheck.bind(this)
     );
-    this.updateAvailableTakes(figWithPos.figure, rockDirections(figWithPos.position));
+    this.updateAvailableTakes(figWithPos.figure, rock.take(figWithPos.position));
   }
 
   public bishopUpdate(figWithPos: FigureWithPosition): void {
     this.updateAvailableMoves(
       figWithPos.figure,
-      bishopDirections(figWithPos.position),
+      bishop.move(figWithPos.position),
       this.moveCheck.bind(this)
     );
-    this.updateAvailableTakes(figWithPos.figure, bishopDirections(figWithPos.position));
+    this.updateAvailableTakes(figWithPos.figure, bishop.take(figWithPos.position));
   }
 
   public queenUpdate(figWithPos: FigureWithPosition): void {
     this.updateAvailableMoves(
       figWithPos.figure,
-      queenDirections(figWithPos.position),
+      queen.move(figWithPos.position),
       this.moveCheck.bind(this)
     );
-    this.updateAvailableTakes(figWithPos.figure, queenDirections(figWithPos.position));
+    this.updateAvailableTakes(figWithPos.figure, queen.take(figWithPos.position));
   }
 
   public kingUpdate(figWithPos: FigureWithPosition): void {
     this.updateAvailableMoves(
       figWithPos.figure,
-      kingDirections(figWithPos.position),
+      king.move(figWithPos.position),
       this.moveCheck.bind(this)
     );
-    this.updateAvailableTakes(figWithPos.figure, kingDirections(figWithPos.position));
+    this.updateAvailableTakes(figWithPos.figure, king.take(figWithPos.position));
   }
 }

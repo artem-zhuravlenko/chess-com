@@ -1,37 +1,33 @@
-import { Color, COLOR, FIGURE_TYPE, PositionString, FigurePositionMap } from "../types";
-import { Position } from "../Position";
-import { isCellIndex } from "../utills/isCellIndex";
-import { Figure } from "../Figure";
-import { rock } from "../moveDirections/rock";
-import { queen } from "../moveDirections/queen";
-import { king } from "../moveDirections/king";
-import { whitePawn } from "../moveDirections/whitePawn";
-import { blackPawn } from "../moveDirections/blackPawn";
-import { bishop } from "../moveDirections/bishop";
-import { knight } from "../moveDirections/knight";
+import {Color, COLOR, FIGURE_TYPE, FigurePositionMap, PositionString} from "../types";
+import {Position} from "../Position";
+import {Figure} from "../Figure";
+import {rock} from "../moveDirections/rock";
+import {queen} from "../moveDirections/queen";
+import {king} from "../moveDirections/king";
+import {whitePawn} from "../moveDirections/whitePawn";
+import {blackPawn} from "../moveDirections/blackPawn";
+import {bishop} from "../moveDirections/bishop";
+import {knight} from "../moveDirections/knight";
+import {getOppositeColor} from "../utills/getOppositeColor";
 
 type FigureWithPosition = { figure: Figure; position: Position };
 
-export const getOppositeColor = (color: Color) => {
-  return color === COLOR.white ? COLOR.black : COLOR.white;
-};
-
 export class Model {
+  currentTurn: Color;
   selectedCell: {
     position: Position;
   } | null;
-  onModelChange: (model: Model) => void;
-  currentTurn: Color;
   readonly figures: FigurePositionMap;
 
   constructor(defaultFigurePositionMap: FigurePositionMap) {
     this.selectedCell = null;
     this.currentTurn = COLOR.white;
-    this.onModelChange = () => {
-      throw new Error("You should specify onModelChange");
-    };
     this.figures = defaultFigurePositionMap;
   }
+
+  private commitChanges() {
+    throw new Error("You should specify onModelChange");
+  };
 
   private toggleTurn() {
     this.currentTurn = getOppositeColor(this.currentTurn);
@@ -42,9 +38,7 @@ export class Model {
   }
 
   private moveCheck(position: Position): boolean {
-    const isCellFree = !this.getFigure(position);
-
-    return isCellFree;
+    return !this.getFigure(position);
   }
 
   private updateAvailableMoves(
@@ -72,17 +66,13 @@ export class Model {
 
     for (let i = 0; i < directions.length; i++) {
       for (let j = 0; j < directions[i].length; j++) {
-        const position = directions[i][j];
-
-        if (!isCellIndex(position.x) || !isCellIndex(position.y)) return;
-
-        let figureOnTheWay = this.getFigure(position);
+        let figureOnTheWay = this.getFigure(directions[i][j]);
 
         if (figureOnTheWay) {
           const isEnemyOnTheWay = figureOnTheWay.color !== figure.color;
 
           if (isEnemyOnTheWay) {
-            figure.availableTakes.add(position.toString());
+            figure.availableTakes.add(directions[i][j].toString());
           }
           break;
         }
@@ -117,7 +107,7 @@ export class Model {
     }
   }
 
-  public updateFieldState(): void {
+  private updateFieldState(): void {
     this.figures.forEach((figure, positionStr) => {
       const figureWithPositon = {
         figure,
@@ -130,12 +120,8 @@ export class Model {
 
   public readonly initializeFieldState = this.updateFieldState;
 
-  public bindModelChange(callback: (model: Model) => void): void {
-    this.onModelChange = callback;
-  }
-
-  private commitChanges(model: Model): void {
-    this.onModelChange(model);
+  public bindCommitChanges(callback: () => void): void {
+    this.commitChanges = callback;
   }
 
   public trySelectFigure(position: Position): void {
@@ -149,62 +135,53 @@ export class Model {
       position,
     };
 
-    this.commitChanges(this);
+    this.commitChanges();
   }
 
   public tryMoveFigure(positionFrom: Position, positionTo: Position): void {
-    const positionFromFigure = this.getFigure(positionFrom);
-    const positionToFigure = this.getFigure(positionTo);
+    const figureFrom = this.getFigure(positionFrom);
+    const figureTo = this.getFigure(positionTo);
 
-    if (!positionFromFigure) return;
-    if (positionToFigure) return;
+    if (!figureFrom) return;
+    if (figureTo) return;
 
-    const isAvailableToMove = positionFromFigure.availableMoves.has(positionTo.toString());
+    const isAvailableToMove = figureFrom.availableMoves.has(positionTo.toString());
 
     if (!isAvailableToMove) return;
 
-    const figureToMove = this.figures.get(positionFrom.toString());
-
-    if (!figureToMove) return;
-
-    this.figures.set(positionTo.toString(), figureToMove);
+    this.figures.set(positionTo.toString(), figureFrom);
     this.figures.delete(positionFrom.toString());
 
-    positionFromFigure.isMoved = true;
+    figureFrom.isMoved = true;
     this.toggleTurn();
     this.updateFieldState();
 
-    this.commitChanges(this);
+    this.commitChanges();
   }
 
   public tryTakeFigure(positionFrom: Position, positionTo: Position): void {
-    const positionFromFigure = this.getFigure(positionFrom);
-    const positionToFigure = this.getFigure(positionTo);
+    const figureFrom = this.getFigure(positionFrom);
+    const figureTo = this.getFigure(positionTo);
 
-    if (!positionFromFigure) return;
-    if (!positionToFigure) return;
-    if (positionFromFigure.color === positionToFigure.color) return;
+    if (!figureFrom) return;
+    if (!figureTo) return;
+    if (figureFrom.color === figureTo.color) return;
 
-    const isAvailableToTake = !positionFromFigure.availableTakes.has(positionTo.toString());
-
-    const figureToMove = this.figures.get(positionFrom.toString());
+    const isAvailableToTake = !figureFrom.availableTakes.has(positionTo.toString());
 
     if (isAvailableToTake) return;
 
-    if (!figureToMove) return;
-
-    this.figures.set(positionTo.toString(), figureToMove);
+    this.figures.set(positionTo.toString(), figureFrom);
     this.figures.delete(positionFrom.toString());
 
-    positionFromFigure.isMoved = true;
-
+    figureFrom.isMoved = true;
     this.toggleTurn();
     this.updateFieldState();
 
-    this.commitChanges(this);
+    this.commitChanges();
   }
 
-  public whitePawnUpdate(figWithPos: FigureWithPosition): void {
+  private whitePawnUpdate(figWithPos: FigureWithPosition): void {
     this.updateAvailableMoves(
       figWithPos.figure,
       whitePawn.moveDirections(figWithPos.position, figWithPos.figure.isMoved),
@@ -213,7 +190,7 @@ export class Model {
     this.updateAvailableTakes(figWithPos.figure, whitePawn.takeDirections(figWithPos.position));
   }
 
-  public blackPawnUpdate(figWithPos: FigureWithPosition): void {
+  private blackPawnUpdate(figWithPos: FigureWithPosition): void {
     this.updateAvailableMoves(
       figWithPos.figure,
       blackPawn.move(figWithPos.position, figWithPos.figure.isMoved),
@@ -222,7 +199,7 @@ export class Model {
     this.updateAvailableTakes(figWithPos.figure, blackPawn.take(figWithPos.position));
   }
 
-  public knightUpdate(figWithPos: FigureWithPosition): void {
+  private knightUpdate(figWithPos: FigureWithPosition): void {
     this.updateAvailableMoves(
       figWithPos.figure,
       knight.move(figWithPos.position),
@@ -231,7 +208,7 @@ export class Model {
     this.updateAvailableTakes(figWithPos.figure, knight.take(figWithPos.position));
   }
 
-  public rookUpdate(figWithPos: FigureWithPosition): void {
+  private rookUpdate(figWithPos: FigureWithPosition): void {
     this.updateAvailableMoves(
       figWithPos.figure,
       rock.move(figWithPos.position),
@@ -240,7 +217,7 @@ export class Model {
     this.updateAvailableTakes(figWithPos.figure, rock.take(figWithPos.position));
   }
 
-  public bishopUpdate(figWithPos: FigureWithPosition): void {
+  private bishopUpdate(figWithPos: FigureWithPosition): void {
     this.updateAvailableMoves(
       figWithPos.figure,
       bishop.move(figWithPos.position),
@@ -249,7 +226,7 @@ export class Model {
     this.updateAvailableTakes(figWithPos.figure, bishop.take(figWithPos.position));
   }
 
-  public queenUpdate(figWithPos: FigureWithPosition): void {
+  private queenUpdate(figWithPos: FigureWithPosition): void {
     this.updateAvailableMoves(
       figWithPos.figure,
       queen.move(figWithPos.position),
@@ -258,7 +235,7 @@ export class Model {
     this.updateAvailableTakes(figWithPos.figure, queen.take(figWithPos.position));
   }
 
-  public kingUpdate(figWithPos: FigureWithPosition): void {
+  private kingUpdate(figWithPos: FigureWithPosition): void {
     this.updateAvailableMoves(
       figWithPos.figure,
       king.move(figWithPos.position),

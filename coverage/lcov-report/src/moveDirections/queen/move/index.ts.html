@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>22/22</span>
+                <span class='fraction'>11/22</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>22/22</span>
+                <span class='fraction'>11/22</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -95,17 +95,17 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span></td><td class="text"><pre class="prettyprint lang-js">import {Position} from "../../../Position";
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {Position} from "../../../Position";
 import {upPositions} from "../../../directionGenerators/upPositions";
 import {downPositions} from "../../../directionGenerators/downPositions";
 import {leftPositions} from "../../../directionGenerators/leftPositions";
@@ -115,25 +115,25 @@ import {leftDownPositions} from "../../../directionGenerators/leftDownPositions"
 import {rightUpPositions} from "../../../directionGenerators/rightUpPositions";
 import {leftUpPositions} from "../../../directionGenerators/leftUpPositions";
 &nbsp;
-export const move = (position: Position): Position[][] =&gt; {
-    return [
-        upPositions(position),
-        downPositions(position),
-        leftPositions(position),
-        rightPositions(position),
-        rightDownPositions(position),
-        leftDownPositions(position),
-        rightUpPositions(position),
-        leftUpPositions(position),
-    ].filter((arr) =&gt; arr.length &gt; 0);
-};</pre></td></tr></table></pre>
+export const move = <span class="fstat-no" title="function not covered" >(position: Position): Position[][] =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    return [</span>
+<span class="cstat-no" title="statement not covered" >        upPositions(position),</span>
+<span class="cstat-no" title="statement not covered" >        downPositions(position),</span>
+<span class="cstat-no" title="statement not covered" >        leftPositions(position),</span>
+<span class="cstat-no" title="statement not covered" >        rightPositions(position),</span>
+<span class="cstat-no" title="statement not covered" >        rightDownPositions(position),</span>
+<span class="cstat-no" title="statement not covered" >        leftDownPositions(position),</span>
+<span class="cstat-no" title="statement not covered" >        rightUpPositions(position),</span>
+<span class="cstat-no" title="statement not covered" >        leftUpPositions(position),</span>
+<span class="cstat-no" title="statement not covered" >    ].filter((arr) =&gt; arr.length &gt; 0);</span>
+<span class="cstat-no" title="statement not covered" >};</span></pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-05-07T10:49:56.995Z
+                at 2023-05-07T18:43:01.913Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

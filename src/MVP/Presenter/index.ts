@@ -65,7 +65,7 @@ export class Presenter {
   constructor(model: Model, view: View, applyControl: ApplyControl) {
     this.model = model;
     this.view = view;
-    this.model.bindModelChange(this.onModelChange.bind(this));
+    this.model.bindCommitChanges(this.onModelChange.bind(this));
     this.model.initializeFieldState();
     this.view.render(modelForView(model));
     applyControl(model, view);
